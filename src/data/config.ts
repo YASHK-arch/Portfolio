@@ -1,45 +1,43 @@
 const config = {
-  title: "Naresh Khatri | Full-Stack Developer",
+  title: "Yash Kumar | Full-Stack Developer",
   description: {
-    long: "Explore the portfolio of Naresh, a full-stack developer and creative technologist specializing in interactive web experiences, 3D animations, and innovative projects. Discover my latest work, including Coding Ducks, The Booking Desk, Ghostchat, and more. Let's build something amazing together!",
+    long: "Explore the portfolio of Yash Kumar, a full-stack developer and AI/ML enthusiast specializing in intelligent web applications, deepfake detection, and open-source tools. Discover my latest work, including RepoOwl, NavNER-AI, OmniReceipt-parser, and more. Let's build something amazing together!",
     short:
-      "Discover the portfolio of Naresh, a full-stack developer creating interactive web experiences and innovative projects.",
+      "Discover the portfolio of Yash Kumar, a full-stack developer building AI-powered tools and innovative web experiences.",
   },
   keywords: [
-    "Naresh",
+    "Yash Kumar",
     "portfolio",
     "full-stack developer",
-    "creative technologist",
+    "AI/ML",
+    "data science",
     "web development",
-    "3D animations",
-    "interactive websites",
-    "Coding Ducks",
-    "The Booking Desk",
-    "Ghostchat",
-    "web design",
-    "GSAP",
+    "RepoOwl",
+    "NavNER-AI",
+    "OmniReceipt-parser",
+    "deepfake detection",
     "React",
     "Next.js",
-    "Spline",
-    "Framer Motion",
+    "Python",
+    "TypeScript",
+    "open source",
+    "GSSOC",
   ],
-  author: "Naresh Khatri",
-  email: "naresh.khatri2345@gmail.com",
-  site: "https://nareshkhatri.dev",
+  author: "Yash Kumar",
+  email: "yashkumar02006@gmail.com",
+  site: "https://yashkumar.dev",
 
   // for github stars button
-  githubUsername: "naresh-khatri",
-  githubRepo: "3d-portfolio",
+  githubUsername: "YASHK-arch",
+  githubRepo: "Portfolio",
 
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";
   },
   social: {
-    twitter: "https://x.com/nothotchaddi",
-    linkedin: "https://www.linkedin.com/in/naresh-khatri/",
-    instagram: "https://www.instagram.com/hotchaddi",
-    facebook: "https://www.facebook.com/HotChaddi/",
-    github: "https://github.com/Naresh-Khatri",
+    linkedin: "https://www.linkedin.com/in/yash-kumar-836847279/",
+    github: "https://github.com/YASHK-arch",
+    youtube: "https://www.youtube.com/@beyondyourthoughts",
   },
 };
 export { config };

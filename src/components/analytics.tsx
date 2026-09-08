@@ -2,14 +2,14 @@
 
 import * as React from "react";
 
-const ENDPOINT = "https://nareshkhatri.dev/api/collect";
+const ENDPOINT = "https://yashkumar.dev/api/collect";
 const KEY = "portfolio:site";
 
 const isLocal = (h: string) =>
   h === "localhost" ||
   h === "127.0.0.1" ||
-  h === "nareshkhatri.dev" ||
-  h.endsWith(".nareshkhatri.dev");
+  h === "yashkumar.dev" ||
+  h.endsWith(".yashkumar.dev");
 
 // records the deployment hostname once per browser, so I know where builds run.
 export default function Analytics() {
