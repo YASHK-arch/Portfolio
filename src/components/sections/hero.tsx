@@ -13,8 +13,8 @@ import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiLinkedin, SiYoutube } from "react-icons/si";
 import { config } from "@/data/config";
-
 import SectionWrapper from "../ui/section-wrapper";
+import HeroAvatarOrbs from "../hero-avatar-orbs";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
@@ -142,8 +142,11 @@ const HeroSection = () => {
             </div>
           )}
         </div>
-        <div className="grid col-span-1"></div>
+        <div className="grid col-span-1" />
       </div>
+
+      {/* Floating holographic avatar badges — fixed overlay on the Spline canvas */}
+      <HeroAvatarOrbs />
       <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
         <ScrollDownIcon />
       </div>

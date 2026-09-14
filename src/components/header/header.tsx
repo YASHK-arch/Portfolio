@@ -34,18 +34,73 @@ const Header = ({ loader }: HeaderProps) => {
         y: 0,
       }}
       transition={{
-        delay: loader ? 3.5 : 0, // 3.5 for loading, .5 can be added for delay
+        delay: loader ? 3.5 : 0,
         duration: 0.8,
       }}
     >
       <div className="flex w-full items-center justify-between px-4">
-        {/* Left: Author */}
-        <div className="flex items-center">
+        {/* Left: Author + Profile Avatars */}
+        <div className="flex items-center gap-3">
           <Link href="/">
             <Button variant={"link"} className="text-md px-0">
               {config.author}
             </Button>
           </Link>
+
+          {/* Profile Image Avatars */}
+          <div className={styles.avatarGroup}>
+            {/* LinkedIn Avatar */}
+            <motion.a
+              href={config.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(styles.avatarWrapper, styles.linkedinAvatar)}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: loader ? 4.0 : 0.3,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 200,
+                damping: 15,
+              }}
+              title="LinkedIn Profile"
+            >
+              <div className={styles.avatar}>
+                <img
+                  src="/assets/linkedin-pic.png"
+                  alt="Yash Kumar - LinkedIn"
+                  className={styles.avatarImg}
+                />
+              </div>
+            </motion.a>
+
+            {/* GitHub Avatar */}
+            <motion.a
+              href={config.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(styles.avatarWrapper, styles.githubAvatar)}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: loader ? 4.2 : 0.5,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 200,
+                damping: 15,
+              }}
+              title="GitHub Profile"
+            >
+              <div className={styles.avatar}>
+                <img
+                  src="/assets/github-pic.jpg"
+                  alt="Yash Kumar - GitHub"
+                  className={styles.avatarImg}
+                />
+              </div>
+            </motion.a>
+          </div>
         </div>
 
         {/* Center: Navigation Links */}
