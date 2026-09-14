@@ -386,53 +386,46 @@ const projects: Project[] = [
     },
   },
   {
-    id: "newsguru",
-    category: "News Application",
-    title: "News Guru",
-    src: "/assets/projects-screenshots/newsguru/landing.png",
+    id: "flavourly",
+    category: "Web Application",
+    title: "FLAVOURLY",
+    src: "/assets/projects-screenshots/flavourly/landing.png",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
         PROJECT_SKILLS.js,
         PROJECT_SKILLS.react,
-        PROJECT_SKILLS.tailwind,
       ],
-      backend: [PROJECT_SKILLS.node, PROJECT_SKILLS.express],
+      backend: [],
     },
     live: "#",
-    github: "https://github.com/YASHK-arch/News-Guru",
+    github: "https://github.com/YASHK-arch/FLAVOURLY",
     get content() {
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            Read News Like a Guru — a clean, modern news reader.
+            A modern recipe discovery application powered by TheMealDB.
           </TypographyP>
           <TypographyP className="font-mono ">
-            News Guru is a clean news aggregator that pulls in the latest
-            headlines and stories from multiple sources. Built with React and
-            Node.js, it offers a distraction-free reading experience with
-            category filtering, search, and bookmarking.
+            FLAVOURLY is an interactive recipe discovery app built with React and Vite. It allows users to search for meals by title or ingredients, filter for vegetarian options, and manage their favorite recipes with persistent local storage.
           </TypographyP>
           <ProjectsLinks live={this.live} repo={this.github} />
 
           <TypographyH3 className="my-4 mt-8">
-            Clean Reading Experience
+            Dynamic Recipe Discovery
           </TypographyH3>
           <p className="font-mono mb-2">
-            A minimalist, ad-free interface focused on content. Articles are
-            presented in a card-based layout with category tags, publication
-            timestamps, and source attribution — designed to reduce information
-            overload.
+            Features real-time search capabilities, simultaneously querying both meal titles and specific ingredients across the comprehensive TheMealDB API. Includes responsive design and detailed full-screen modal overlays for viewing recipe instructions and ingredients.
           </p>
         </div>
       );
     },
   },
   {
-    id: "shopkart",
-    category: "E-commerce",
-    title: "ShopKart BEL",
-    src: "/assets/projects-screenshots/shopkart/landing.png",
+    id: "algogate",
+    category: "EdTech Platform",
+    title: "AlgoGATE",
+    src: "/assets/projects-screenshots/algogate/landing.png",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
@@ -441,35 +434,34 @@ const projects: Project[] = [
         PROJECT_SKILLS.tailwind,
       ],
       backend: [
-        PROJECT_SKILLS.node,
-        PROJECT_SKILLS.express,
-        PROJECT_SKILLS.mongo,
+        PROJECT_SKILLS.firebase,
       ],
     },
-    live: "#",
-    github: "https://github.com/YASHK-arch/ShopKart-BEL",
+    live: "https://YASHK-arch.github.io/AlgoGATE",
+    github: "https://github.com/YASHK-arch/AlgoGATE",
     get content() {
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            A full-featured e-commerce platform built with the MERN stack.
+            A specialized coding practice platform for GATE DA candidates.
           </TypographyP>
           <TypographyP className="font-mono ">
-            ShopKart-BEL is an e-commerce application featuring product
-            listings, cart management, user authentication, and order processing.
-            Built with JavaScript, React, Node.js, Express, and MongoDB — a
-            complete shopping experience from browsing to checkout.
+            AlgoGATE is an integrated practice platform tailored for the GATE Data Science and Artificial Intelligence (DA) syllabus. It merges curated algorithmic challenges with Codeforces synchronization, interactive study notes, real-time discussions, and progress tracking, providing an all-in-one preparation ecosystem.
           </TypographyP>
           <ProjectsLinks live={this.live} repo={this.github} />
 
           <TypographyH3 className="my-4 mt-8">
-            Full Shopping Flow
+            Codeforces Synchronization
           </TypographyH3>
           <p className="font-mono mb-2">
-            End-to-end e-commerce functionality: product catalog with search and
-            filtering, shopping cart with quantity management, secure
-            authentication, and order tracking. MongoDB stores product data,
-            user profiles, and order history.
+            Auto-detects and seamlessly syncs problems solved on Codeforces into AlgoGATE's progress tracking system. Generates a unified, GitHub-style activity heatmap reflecting your combined solving streaks across platforms.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">
+            Real-time Discussions & Tracking
+          </TypographyH3>
+          <p className="font-mono mb-2">
+            Engage in per-problem discussion threads powered by real-time Firestore synchronization. Track topic-wise mastery, visualize statistics through interactive dashboards, and organize study sessions using the built-in calendar planner.
           </p>
         </div>
       );

@@ -88,7 +88,7 @@ const HeroSection = () => {
                   <BoxReveal delay={2} width="100%" >
                     <Button className="flex items-center gap-2 w-full">
                       <File size={24} />
-                      <p>Resume</p>
+                      <p>Portfolio PDF</p>
                     </Button>
                   </BoxReveal>
                 </Link>
