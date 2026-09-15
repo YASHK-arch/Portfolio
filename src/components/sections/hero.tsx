@@ -44,7 +44,7 @@ const HeroSection = () => {
         />
       </div>
 
-      <div className="relative z-[1] grid md:grid-cols-2">
+      <div className="relative z-[1000] grid md:grid-cols-2">
         <div
           className={cn(
             "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
@@ -171,7 +171,7 @@ const HeroSection = () => {
 
       {/* Floating holographic avatar badges — fixed overlay on the Spline canvas */}
       <HeroAvatarOrbs />
-      <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
+      <div className="absolute bottom-10 left-[50%] translate-x-[-50%] z-[1000]">
         <ScrollDownIcon />
       </div>
     </SectionWrapper>

@@ -406,7 +406,7 @@ export default function HeroAvatarOrbs() {
   return (
     /* pointer-events-none wrapper — each badge enables its own */
     <motion.div
-      style={{ pointerEvents: "none", position: "fixed", inset: 0, zIndex: 49 }}
+      style={{ pointerEvents: "none", position: "fixed", inset: 0, zIndex: 1001 }}
       animate={{
         opacity: heroVisible ? 1 : 0,
         scale: heroVisible ? 1 : 0.88,

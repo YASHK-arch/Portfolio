@@ -1,30 +1,26 @@
 "use client";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import styles from "./style.module.scss";
 import { cn } from "@/lib/utils";
-import FunnyThemeToggle from "../theme/funny-theme-toggle";
 import { Button } from "../ui/button";
 import { config } from "@/data/config";
 import OnlineUsers from "../realtime/online-users";
 import { GitHubStarsButton } from "../ui/shadcn-io/github-stars-button";
-import { links } from "./config";
+import PokeballMenu from "../pokeball-menu/pokeball-menu";
 
 interface HeaderProps {
   loader?: boolean;
 }
 
 const Header = ({ loader }: HeaderProps) => {
-  const isHome = usePathname() === "/";
+
   return (
     <motion.header
       className={cn(
         styles.header,
-        "transition-colors delay-100 duration-500 ease-in z-[1000]",
-        "flex items-center",
-        /* Brutalist: solid opaque bg + hard bottom border */
-        "bg-background border-b-2 border-foreground"
+        "transition-colors delay-100 duration-500 ease-in z-[9999]",
+        "flex flex-col bg-transparent"
       )}
       initial={{ y: -80 }}
       animate={{ y: 0 }}
@@ -98,29 +94,21 @@ const Header = ({ loader }: HeaderProps) => {
           </div>
         </div>
 
-        {/* Center: Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {links.map((link, idx) => (
-            <Link
-              key={idx}
-              href={link.href}
-              className="text-xs font-bold uppercase tracking-[0.15em] hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-0.5"
-            >
-              {link.title}
-            </Link>
-          ))}
-        </nav>
+        {/* Right: Actions (Order: 1. Chat Box, 2. GitHub Stars, 3. Menu Toggle) */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* 1. Discord Chat / Online Users Icon */}
+          <OnlineUsers />
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2">
-          <FunnyThemeToggle className="w-6 h-6 hidden md:flex" />
-          {isHome && process.env.NEXT_PUBLIC_WS_URL && <OnlineUsers />}
+          {/* 3. GitHub Stars Button */}
           {config.githubUsername && config.githubRepo && (
             <GitHubStarsButton
               username={config.githubUsername}
               repo={config.githubRepo}
             />
           )}
+
+          {/* 4. Pokeball Menu Button */}
+          <PokeballMenu />
         </div>
       </div>
     </motion.header>

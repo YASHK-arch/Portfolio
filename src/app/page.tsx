@@ -16,7 +16,7 @@ function MainPage() {
     <SmoothScroll>
       <AnimatedBackground />
       <MemeViewer />
-      <main className={cn("relative z-10 canvas-overlay-mode")}>
+      <main className={cn("canvas-overlay-mode")}>
         <HeroSection />
         <SkillsSection />
         <ExperienceSection />

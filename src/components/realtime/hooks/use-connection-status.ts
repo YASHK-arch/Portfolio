@@ -8,7 +8,7 @@ export const useConnectionStatus = (socket: Socket | null): ConnectionStatus => 
 
   useEffect(() => {
     if (!socket) {
-      setStatus("disconnected");
+      setStatus("connected");
       return;
     }
 

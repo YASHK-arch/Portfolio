@@ -31,18 +31,21 @@ import { EditProfileModal } from "./components/edit-profile-modal";
 import { AdminPasswordDialog } from "./components/admin-password-dialog";
 import { THEME } from "./constants";
 import { getAvatarUrl } from "@/lib/avatar";
+import { config } from "@/data/config";
 
 const OnlineUsers = () => {
-  const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages } = useContext(SocketContext);
+  const { socket, users: _users, msgs, setMsgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages } = useContext(SocketContext);
   const users = Array.from(_users.values());
   const [showUserList, setShowUserList] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [activeTab, setActiveTab] = useState<"discord" | "chat">("discord");
+  const [discordMode, setDiscordMode] = useState<"widgetbot" | "official">("widgetbot");
   const [replyTarget, setReplyTarget] = useState<Message | null>(null);
   const [editTarget, setEditTarget] = useState<Message | null>(null);
   const [showAdminDialog, setShowAdminDialog] = useState(false);
 
-  const currentUser = users.find(u => u.socketId === socket?.id);
+  const currentUser = users.find(u => u.socketId === socket?.id) || users[users.length - 1];
   const { toast } = useToast();
   const { playSendSound, playReceiveSound } = useSounds();
   const connectionStatus = useConnectionStatus(socket);
@@ -132,15 +135,53 @@ const OnlineUsers = () => {
       return;
     }
     if (editTarget) {
-      socket?.emit("msg-edit", { id: editTarget.id, content: cmd.content });
+      if (socket) {
+        socket.emit("msg-edit", { id: editTarget.id, content: cmd.content });
+      } else {
+        setMsgs(prev => prev.map(m =>
+          String(m.id) === String(editTarget.id) && (!("type" in m) || !m.type)
+            ? { ...m, content: cmd.content, editedAt: new Date().toISOString() }
+            : m
+        ));
+      }
       setEditTarget(null);
       return;
     }
 
-    socket?.emit("msg-send", {
-      content: cmd.content,
-      ...(replyTarget && { replyTo: replyTarget.id }),
-    });
+    if (socket) {
+      socket.emit("msg-send", {
+        content: cmd.content,
+        ...(replyTarget && { replyTo: replyTarget.id }),
+      });
+    } else {
+      const activeUser = currentUser || {
+        id: "user-you",
+        name: "You (Visitor)",
+        avatar: getAvatarUrl("Visitor"),
+        color: "#489653",
+        location: "Local",
+        flag: "🌐",
+      };
+      const newMsg: Message = {
+        id: String(Date.now()),
+        sessionId: activeUser.id,
+        flag: activeUser.flag || "🌐",
+        country: activeUser.location || "Local",
+        username: activeUser.name,
+        avatar: activeUser.avatar,
+        color: activeUser.color,
+        content: cmd.content,
+        createdAt: new Date().toISOString(),
+        ...(replyTarget && {
+          replyTo: {
+            id: replyTarget.id,
+            username: replyTarget.username,
+            content: replyTarget.content,
+          },
+        }),
+      };
+      setMsgs(prev => [...prev, newMsg]);
+    }
     setReplyTarget(null);
   };
 
@@ -213,8 +254,8 @@ const OnlineUsers = () => {
                   <Button
                     variant="ghost"
                     className={cn(
-                      "mr-4 h-11 w-12 shadow-lg transition-all duration-300 z-50 p-0",
-                      "bg-background/20 hover:bg-background/80 backdrop-blur-sm border-2 border-white/30 rounded-lg",
+                      "h-10 w-12 transition-all duration-300 z-50 p-0 relative",
+                      "bg-background/20 hover:bg-background/80 backdrop-blur-sm border border-slate-400/40 dark:border-slate-400/50 rounded-xl",
                       !isOpen && unreads > 0 && "animate-pulse border-green-500/50"
                     )}
                   >
@@ -232,12 +273,12 @@ const OnlineUsers = () => {
                           }}
                           className={cn("absolute -inset-1 rounded-full", unreads > 0 ? "bg-green-500/40" : "bg-transparent")}
                         />
-                        <Users2 className="w-6 h-6" />
+                        <Users2 className="w-5 h-5 text-foreground" />
                       </div>
 
                       <span className={cn(
-                        "absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold transition-colors",
-                        unreads > 0 ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                        "absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-extrabold shadow-sm transition-colors",
+                        unreads > 0 ? "bg-green-500 text-white" : "bg-[#ff6b6b] text-white"
                       )}>
                         {unreads > 0 ? unreads : users.length}
                       </span>
@@ -263,32 +304,42 @@ const OnlineUsers = () => {
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
           {/* Header */}
-          <div className={cn("h-12 flex items-center justify-between px-4 shadow-sm border-b shrink-0", THEME.bg.secondary, THEME.border.primary)}>
-            <div className={cn("flex items-center gap-2 font-semibold", THEME.text.header)}>
-              <Hash className={cn("w-5 h-5", THEME.text.secondary)} />
-              <span>general</span>
-              {/* Feature 2: Connection status indicator */}
-              <div className="flex items-center gap-1.5">
-                <div className={cn(
-                  "w-2 h-2 rounded-full",
-                  connectionStatus === "connected" && "bg-green-500",
-                  connectionStatus === "connecting" && "bg-yellow-500 animate-pulse",
-                  connectionStatus === "disconnected" && "bg-red-500",
-                )} />
-                {connectionStatus !== "connected" && (
-                  <span className={cn("text-[10px] font-normal", THEME.text.secondary)}>
-                    {connectionStatus === "connecting" ? "Connecting..." : "Disconnected"}
-                  </span>
+          <div className={cn("h-12 flex items-center justify-between px-3 shadow-sm border-b shrink-0 gap-2", THEME.bg.secondary, THEME.border.primary)}>
+            <div className="flex items-center gap-1 bg-black/10 dark:bg-white/10 p-1 rounded-lg">
+              <button
+                type="button"
+                onClick={() => setActiveTab("discord")}
+                className={cn(
+                  "text-xs font-bold px-2 py-1 rounded transition-colors flex items-center gap-1",
+                  activeTab === "discord"
+                    ? "bg-[#5865f2] text-white"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
-              </div>
+              >
+                Discord
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("chat")}
+                className={cn(
+                  "text-xs font-bold px-2 py-1 rounded transition-colors flex items-center gap-1",
+                  activeTab === "chat"
+                    ? "bg-[#5865f2] text-white"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Hash className="w-3 h-3" />
+                Chat
+              </button>
             </div>
+
             <div className="flex items-center gap-2">
-              {currentUser && (
+              {activeTab === "chat" && currentUser && (
                 <Button
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "h-9 w-9 p-0 gap-2 transition-colors rounded-full",
+                    "h-8 w-8 p-0 gap-2 transition-colors rounded-full",
                     THEME.bg.hover,
                     THEME.text.secondary,
                     "hover:text-[#060607] dark:hover:text-white"
@@ -296,83 +347,153 @@ const OnlineUsers = () => {
                   onClick={() => setIsEditingProfile(true)}
                   title="Edit Profile"
                 >
-                  <div className="relative w-8 h-8">
+                  <div className="relative w-7 h-7">
                     <img
                       src={getAvatarUrl(currentUser.avatar)}
                       className="w-full h-full rounded-full ring-1 ring-black/10 dark:ring-white/10"
                       style={{ backgroundColor: currentUser.color || '#60a5fa' }}
                     />
                     <div className="absolute -bottom-1 -right-1 bg-[#5865f2] rounded-full border-2 border-[var(--bg-primary)]">
-                      <Settings className="w-3 h-3 text-white" />
+                      <Settings className="w-2.5 h-2.5 text-white" />
                     </div>
                   </div>
                 </Button>
               )}
 
-              <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
-
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  "transition-colors gap-2",
-                  THEME.bg.hover,
-                  `hover:${THEME.text.header.replace("text-", "text-")} `,
-                  "hover:text-[#060607] dark:hover:text-white",
-                  showUserList && cn(THEME.text.header, THEME.bg.active)
-                )}
-                onClick={() => setShowUserList(!showUserList)}
-              >
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" aria-label="Online" role="status" />
-                  <span>
-                    {users.length}
-                  </span>
-                </div>
-                <Users className="w-5 h-5" />
-              </Button>
+              {activeTab === "chat" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={cn(
+                    "transition-colors gap-2 h-8 px-2 text-xs",
+                    THEME.bg.hover,
+                    `hover:${THEME.text.header.replace("text-", "text-")} `,
+                    "hover:text-[#060607] dark:hover:text-white",
+                    showUserList && cn(THEME.text.header, THEME.bg.active)
+                  )}
+                  onClick={() => setShowUserList(!showUserList)}
+                >
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full" aria-label="Online" role="status" />
+                    <span>{users.length}</span>
+                  </div>
+                  <Users className="w-4 h-4" />
+                </Button>
+              )}
             </div>
           </div>
 
           <div className={cn("relative flex flex-col flex-1", THEME.bg.primary)}>
-            <ChatMessageList
-              msgs={msgs}
-              users={users}
-              currentUser={currentUser}
-              chatContainerRef={chatContainer}
-              showScrollButton={showScrollButton}
-              unreads={unreads}
-              scrollToBottom={scrollToBottom}
-              isSingleUser={isSingleUser}
-              typingUsers={typingUsers}
-              getTypingText={getTypingText}
-              onReply={setReplyTarget}
-              onEdit={setEditTarget}
-              hasMoreMessages={hasMoreMessages}
-              loadingHistory={loadingHistory}
-              onLoadMore={fetchOlderMessages}
-              initStatus={initStatus}
-            />
+            {activeTab === "discord" ? (
+              <div className="w-full h-[450px] bg-[#2b2d31] flex flex-col overflow-hidden">
+                {/* Server Join Banner & Mode Switcher */}
+                <div className="p-2.5 bg-[#1e1f22] border-b border-black/20 flex items-center justify-between gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="w-7 h-7 rounded-full bg-[#5865f2] flex items-center justify-center text-white font-bold text-[10px] shrink-0">
+                      DC
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-white truncate">THE DENVER CLUB</div>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setDiscordMode("widgetbot")}
+                          className={cn(
+                            "text-[10px] px-1.5 py-0.5 rounded font-medium transition-colors",
+                            discordMode === "widgetbot" ? "bg-[#5865f2] text-white" : "text-gray-400 hover:text-white"
+                          )}
+                        >
+                          WidgetBot Chat
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDiscordMode("official")}
+                          className={cn(
+                            "text-[10px] px-1.5 py-0.5 rounded font-medium transition-colors",
+                            discordMode === "official" ? "bg-[#5865f2] text-white" : "text-gray-400 hover:text-white"
+                          )}
+                        >
+                          Server Widget
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <a
+                    href={config.discord.inviteUrl || "https://discord.gg/pk2hEkJMP"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="bg-[#248046] hover:bg-[#1a6334] text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shrink-0"
+                  >
+                    Join Server
+                  </a>
+                </div>
 
-            <ChatInput
-              onSendMessage={handleCommand}
-              onTyping={handleTyping}
-              placeholder="Message #general"
-              replyTarget={replyTarget}
-              onCancelReply={() => setReplyTarget(null)}
-              editTarget={editTarget}
-              onCancelEdit={() => setEditTarget(null)}
-              onEditLastMessage={handleEditLastMessage}
-              rateLimitedUntil={rateLimitedUntil}
-            />
+                {/* Dynamic Embed iframe */}
+                {discordMode === "widgetbot" ? (
+                  <iframe
+                    src={`https://e.widgetbot.io/channels/${config.discord.serverId}/${config.discord.channelId}`}
+                    width="100%"
+                    height="100%"
+                    allow="clipboard-write"
+                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-forms"
+                    className="w-full flex-1 border-none"
+                    title="Discord WidgetBot Chat"
+                  />
+                ) : (
+                  <iframe
+                    src={`https://discord.com/widget?id=${config.discord.serverId}&theme=dark`}
+                    width="100%"
+                    height="100%"
+                    allowTransparency={true}
+                    frameBorder="0"
+                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                    className="w-full flex-1 border-none"
+                    title="Official Discord Server Widget"
+                  />
+                )}
+              </div>
+            ) : (
+              <>
+                <ChatMessageList
+                  msgs={msgs}
+                  users={users}
+                  currentUser={currentUser}
+                  chatContainerRef={chatContainer}
+                  showScrollButton={showScrollButton}
+                  unreads={unreads}
+                  scrollToBottom={scrollToBottom}
+                  isSingleUser={isSingleUser}
+                  typingUsers={typingUsers}
+                  getTypingText={getTypingText}
+                  onReply={setReplyTarget}
+                  onEdit={setEditTarget}
+                  hasMoreMessages={hasMoreMessages}
+                  loadingHistory={loadingHistory}
+                  onLoadMore={fetchOlderMessages}
+                  initStatus={initStatus}
+                />
 
-            <UserList
-              users={users}
-              socket={socket}
-              showUserList={showUserList}
-              onClose={() => setShowUserList(false)}
-              onEditProfile={() => setIsEditingProfile(true)}
-            />
+                <ChatInput
+                  onSendMessage={handleCommand}
+                  onTyping={handleTyping}
+                  placeholder="Message #general"
+                  replyTarget={replyTarget}
+                  onCancelReply={() => setReplyTarget(null)}
+                  editTarget={editTarget}
+                  onCancelEdit={() => setEditTarget(null)}
+                  onEditLastMessage={handleEditLastMessage}
+                  rateLimitedUntil={rateLimitedUntil}
+                />
+
+                <UserList
+                  users={users}
+                  socket={socket}
+                  showUserList={showUserList}
+                  onClose={() => setShowUserList(false)}
+                  onEditProfile={() => setIsEditingProfile(true)}
+                />
+              </>
+            )}
           </div>
 
         </PopoverContent>

@@ -143,7 +143,7 @@ const projects: Project[] = [
     id: "repoowl",
     category: "AI Developer Tool",
     title: "RepoOwl",
-    src: "/assets/projects-screenshots/repoowl/landing.png",
+    src: "/assets/project-thumbnails/RepoOwl.jpeg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
@@ -206,7 +206,7 @@ const projects: Project[] = [
     id: "navner-ai",
     category: "AI Logistics Platform",
     title: "NavNER-AI",
-    src: "/assets/projects-screenshots/navner/landing.png",
+    src: "/assets/project-thumbnails/NavNER-AI.jpeg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
@@ -276,7 +276,7 @@ const projects: Project[] = [
     id: "omnireceipt",
     category: "AI Utility",
     title: "OmniReceipt Parser",
-    src: "/assets/projects-screenshots/omnireceipt/landing.png",
+    src: "/assets/project-thumbnails/OmniRecieptparser.png",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
@@ -389,7 +389,7 @@ const projects: Project[] = [
     id: "flavourly",
     category: "Web Application",
     title: "FLAVOURLY",
-    src: "/assets/projects-screenshots/flavourly/landing.png",
+    src: "/assets/project-thumbnails/Flavourly.jpeg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [
@@ -425,7 +425,7 @@ const projects: Project[] = [
     id: "algogate",
     category: "EdTech Platform",
     title: "AlgoGATE",
-    src: "/assets/projects-screenshots/algogate/landing.png",
+    src: "/assets/project-thumbnails/AlgoGATE.jpeg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [

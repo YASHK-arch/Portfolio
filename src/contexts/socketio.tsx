@@ -62,6 +62,7 @@ type SocketContextType = {
   users: User[];
   setUsers: Dispatch<SetStateAction<User[]>>;
   msgs: ChatItem[];
+  setMsgs: Dispatch<SetStateAction<ChatItem[]>>;
   reactions: Map<string, Reaction[]>;
   profileMap: Map<string, UserProfile>;
   cursorPositions: Map<string, CursorPosition>;
@@ -79,6 +80,7 @@ const INITIAL_STATE: SocketContextType = {
   users: [],
   setUsers: () => { },
   msgs: [],
+  setMsgs: () => { },
   reactions: new Map(),
   profileMap: new Map(),
   cursorPositions: new Map(),
@@ -93,19 +95,128 @@ const INITIAL_STATE: SocketContextType = {
 
 export const SocketContext = createContext<SocketContextType>(INITIAL_STATE);
 
+const DEFAULT_MOCK_USERS: User[] = [
+  {
+    id: "user-admin",
+    socketId: "mock-admin",
+    name: "Yash",
+    avatar: "/assets/me.jpg",
+    color: "#f25c2e",
+    isOnline: true,
+    location: "India",
+    flag: "🇮🇳",
+    lastSeen: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    isAdmin: true,
+  },
+  {
+    id: "user-1",
+    socketId: "mock-1",
+    name: "Daring Phoenix",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix",
+    color: "#fbbf24",
+    isOnline: true,
+    location: "India",
+    flag: "🇮🇳",
+    lastSeen: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "user-2",
+    socketId: "mock-2",
+    name: "Noble Whale",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Whale",
+    color: "#38bdf8",
+    isOnline: true,
+    location: "Germany",
+    flag: "🇩🇪",
+    lastSeen: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "user-3",
+    socketId: "mock-3",
+    name: "Mighty Wolf",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Wolf",
+    color: "#a855f7",
+    isOnline: true,
+    location: "Netherlands",
+    flag: "🇳🇱",
+    lastSeen: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "user-you",
+    socketId: "mock-you",
+    name: "You (Visitor)",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Visitor",
+    color: "#489653",
+    isOnline: true,
+    location: "Local",
+    flag: "🌐",
+    lastSeen: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  },
+];
+
+const DEFAULT_MOCK_MSGS: ChatItem[] = [
+  {
+    id: "1",
+    sessionId: "user-1",
+    flag: "🇮🇳",
+    country: "India",
+    username: "Daring Phoenix",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix",
+    color: "#fbbf24",
+    content: "Love the 3D keyboard animations on this portfolio! 🔥",
+    createdAt: new Date(Date.now() - 3600000).toISOString(),
+  },
+  {
+    id: "2",
+    type: "system",
+    subtype: "join",
+    sessionId: "user-3",
+    username: "Mighty Wolf",
+    flag: "🇳🇱",
+    createdAt: new Date(Date.now() - 2700000).toISOString(),
+  },
+  {
+    id: "3",
+    sessionId: "user-2",
+    flag: "🇩🇪",
+    country: "Germany",
+    username: "Noble Whale",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Whale",
+    color: "#38bdf8",
+    content: "hi everyone! 👋",
+    createdAt: new Date(Date.now() - 1800000).toISOString(),
+  },
+  {
+    id: "4",
+    sessionId: "user-admin",
+    flag: "🇮🇳",
+    country: "India",
+    username: "Yash",
+    avatar: "/assets/me.jpg",
+    color: "#f25c2e",
+    content: "Hello! Welcome to my portfolio #general channel! Drop a message anytime 👋",
+    createdAt: new Date(Date.now() - 900000).toISOString(),
+  },
+];
+
 const SESSION_ID_KEY = "portfolio-site-session-id";
 
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
-  const [msgs, setMsgs] = useState<ChatItem[]>([]);
+  const [users, setUsers] = useState<User[]>(DEFAULT_MOCK_USERS);
+  const [msgs, setMsgs] = useState<ChatItem[]>(DEFAULT_MOCK_MSGS);
   const [reactions, setReactions] = useState<Map<string, Reaction[]>>(new Map());
   const [profileMap, setProfileMap] = useState<Map<string, UserProfile>>(new Map());
   const [cursorPositions, setCursorPositions] = useState<Map<string, CursorPosition>>(new Map());
   const [followingId, setFollowingId] = useState<string | null>(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const [initStatus, setInitStatus] = useState<"idle" | "loading" | "loaded">("idle");
+  const [initStatus, setInitStatus] = useState<"idle" | "loading" | "loaded">("loaded");
   const socketRef = useRef<Socket | null>(null);
   const initStatusRef = useRef<"idle" | "loading" | "loaded">("idle");
 
@@ -268,7 +379,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, cursorPositions, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages }}>
+    <SocketContext.Provider value={{ socket, users, setUsers, msgs, setMsgs, reactions, profileMap, cursorPositions, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages }}>
       {children}
     </SocketContext.Provider>
   );

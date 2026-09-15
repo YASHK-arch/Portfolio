@@ -66,7 +66,7 @@ const ExperienceCard = ({
               <CardTitle className="text-xl font-bold tracking-tight">
                 {experience.title}
               </CardTitle>
-              <div className="text-base font-medium text-muted-foreground">
+              <div className="text-base font-medium text-muted-foreground" style={{ fontFamily: "'Calibri', sans-serif" }}>
                 {experience.company}
               </div>
             </div>
@@ -76,7 +76,7 @@ const ExperienceCard = ({
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <ul className="list-disc list-outside ml-4 space-y-2 text-base text-muted-foreground leading-relaxed marker:text-accent2">
+          <ul className="list-disc list-outside ml-4 space-y-2 text-base text-muted-foreground leading-relaxed marker:text-accent2" style={{ fontFamily: "'Calibri', sans-serif" }}>
             {experience.description.map((point, i) => (
               <li key={i}>{point}</li>
             ))}

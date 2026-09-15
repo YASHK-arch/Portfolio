@@ -484,17 +484,10 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [splineApp]);
 
-  const zIndex =
-    activeSection === "hero"
-      ? "z-[999]"
-      : activeSection === "skills" || activeSection === "contact"
-      ? "z-[1]"
-      : "z-0 pointer-events-none";
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Spline
-        className={`w-full h-full fixed ${zIndex}`}
+        className="w-full h-full fixed z-[1]"
         ref={splineContainer}
         onLoad={(app: Application) => {
           setSplineApp(app);

@@ -109,6 +109,7 @@ export const BoxReveal = ({
           left: 0,
           right: 0,
           zIndex: 20,
+          pointerEvents: "none",
           background: boxColor ? boxColor : "#ffffff00",
         }}
       />

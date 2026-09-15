@@ -39,5 +39,10 @@ const config = {
     github: "https://github.com/YASHK-arch",
     youtube: "https://www.youtube.com/@beyondyourthoughts",
   },
+  discord: {
+    serverId: process.env.NEXT_PUBLIC_DISCORD_SERVER_ID || "1549330289933946972",
+    channelId: process.env.NEXT_PUBLIC_DISCORD_CHANNEL_ID || "1549330291514933263",
+    inviteUrl: "https://discord.gg/pk2hEkJMP",
+  },
 };
 export { config };
