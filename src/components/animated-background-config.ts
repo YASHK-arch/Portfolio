@@ -95,8 +95,8 @@ export const STATES = {
   },
   contact: {
     desktop: {
-      scale: { x: 0.2, y: 0.2, z: 0.2 },
-      position: { x: 350, y: -250, z: 0 },
+      scale: { x: 0.24, y: 0.24, z: 0.24 },
+      position: { x: 450, y: -40, z: 0 },
       rotation: {
         x: 0,
         y: 0,

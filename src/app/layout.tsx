@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Unbounded } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { config } from "@/data/config";
 
@@ -9,18 +9,11 @@ import { Providers } from "@/components/providers";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { UMAMI_SRC } from "@/lib/umami";
 
-/* Body/base font — Space Grotesk, bound to --font-sans (applied as `font-sans`
- * on <html>). Everything that isn't a heading inherits this. */
-const spaceGroteskSans = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-/* Heading font — Unbounded, bound to --font-display and applied to h1–h6. */
-const unbounded = Unbounded({
-  subsets: ["latin"],
-  variable: "--font-display",
+/* Decland is the single visual voice for the portfolio. Keeping it local makes
+ * the site render consistently and avoids a network font dependency. */
+const decland = localFont({
+  src: "../../content/font/CsDeclandHalfpixelTopDemo-aY3Ao.otf",
+  variable: "--font-decland",
   display: "swap",
 });
 
@@ -67,8 +60,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={[
-        spaceGroteskSans.variable,
-        unbounded.variable,
+        decland.variable,
         "font-sans",
       ].join(" ")}
       suppressHydrationWarning

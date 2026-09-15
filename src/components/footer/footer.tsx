@@ -12,8 +12,8 @@ function CopyrightYear() {
 
 function Footer() {
   return (
-    <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t border-border px-4 py-6 sm:flex-row md:px-6 sm:justify-between">
-      <p className="text-xs text-gray-500 dark:text-gray-400">
+    <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t-2 border-foreground px-4 py-6 sm:flex-row md:px-6 sm:justify-between bg-background">
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
         ©{" "}
         <Suspense fallback={null}>
           <CopyrightYear />
@@ -24,10 +24,9 @@ function Footer() {
       <nav className="flex gap-4 sm:gap-6 z-10">
         {footer.map((link, index) => {
           const { title, href } = link;
-
           return (
             <Link
-              className="text-xs underline-offset-4 hover:underline"
+              className="text-xs font-bold uppercase tracking-wider underline-offset-4 hover:underline hover:text-accent transition-colors"
               href={href}
               key={`l_${index}`}
             >

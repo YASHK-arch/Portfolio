@@ -25,7 +25,7 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],
         display: ["var(--font-display)", "sans-serif"],
-        // `font-mono` renders Space Grotesk (same as body) — Space Mono dropped.
+        // Keep mono utility aligned with the single-site Decland type system.
         mono: ["var(--font-sans)", "sans-serif"],
       },
       colors: {
@@ -55,6 +55,10 @@ const config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        accent2: {
+          DEFAULT: "hsl(var(--accent2))",
+          foreground: "hsl(var(--accent2-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -65,9 +69,21 @@ const config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: "0",
+        sm: "0",
+        DEFAULT: "0",
+        md: "0",
+        lg: "0",
+        xl: "0",
+        "2xl": "0",
+        full: "9999px", /* preserve pill shapes like avatar rings */
+      },
+      boxShadow: {
+        brutal: "var(--brutal-shadow)",
+        "brutal-sm": "var(--brutal-shadow-sm)",
+        "brutal-lg": "var(--brutal-shadow-lg)",
+        "brutal-accent": "var(--brutal-shadow-accent)",
+        "brutal-inset": "inset 3px 3px 0px hsl(var(--border))",
       },
       keyframes: {
         "accordion-down": {

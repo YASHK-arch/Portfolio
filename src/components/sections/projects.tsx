@@ -21,7 +21,7 @@ const ProjectsSection = () => {
   return (
     <SectionWrapper id="projects" className="max-w-7xl mx-auto md:min-h-[130vh] px-4">
       <SectionHeader id="projects" title="Projects" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
@@ -36,7 +36,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
       <ResponsiveDialog>
         <ResponsiveDialogTrigger className="bg-transparent flex justify-center w-full">
           <div
-            className="group relative w-full max-w-[400px] h-auto rounded-lg overflow-hidden ring-1 ring-white/5"
+            className="group relative w-full max-w-[400px] h-auto overflow-hidden border-2 border-foreground shadow-brutal transition-all duration-100 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none"
             style={{ aspectRatio: "3/2" }}
           >
             {/* `src` can be any aspect ratio (tall pages pan, normal ones fit);
@@ -48,10 +48,10 @@ const ProjectCard = ({ project }: { project: Project }) => {
             />
             <div className="absolute w-full h-24 bottom-0 left-0 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-10">
               <div className="flex flex-col h-full items-start justify-end p-4">
-                <div className="text-lg text-left [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
+                <div className="text-lg text-left font-bold tracking-tight [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
                   {project.title}
                 </div>
-                <div className="text-xs bg-primary text-primary-foreground rounded-lg w-fit px-2">
+                <div className="text-xs bg-accent text-accent-foreground font-bold uppercase tracking-wider w-fit px-2 py-0.5">
                   {project.category}
                 </div>
               </div>
@@ -61,13 +61,13 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
         <ResponsiveDialogContent className="md:max-w-4xl md:h-[85vh] md:!flex md:flex-col md:overflow-hidden md:p-0 md:gap-0">
           {/* Sticky header */}
-          <div className="shrink-0 border-b border-border bg-background/80 backdrop-blur-sm px-8 py-5">
+          <div className="shrink-0 border-b-2 border-foreground bg-background px-8 py-5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4 min-w-0">
-                <h4 className="font-display text-xl md:text-2xl font-bold text-foreground tracking-tight truncate">
+                <h4 className="font-display text-xl md:text-2xl font-black tracking-tight text-foreground truncate">
                   {project.title}
                 </h4>
-                <span className="shrink-0 text-[11px] uppercase tracking-widest text-muted-foreground border border-border rounded-full px-3 py-0.5">
+                <span className="shrink-0 text-[11px] uppercase tracking-widest text-accent-foreground bg-accent border border-foreground px-3 py-0.5 font-bold">
                   {project.category}
                 </span>
               </div>
@@ -76,14 +76,14 @@ const ProjectCard = ({ project }: { project: Project }) => {
                   <Link
                     href={project.github}
                     target="_blank"
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                    className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
                   >
                     Source
                   </Link>
                 )}
                 {project.live && project.live !== "#" && (
                   <Link href={project.live} target="_blank">
-                    <button className="group flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-1.5 rounded-full hover:bg-primary/80 transition-colors">
+                    <button className="group flex items-center gap-2 bg-primary text-primary-foreground text-sm font-bold uppercase tracking-wider px-4 py-1.5 border-2 border-foreground shadow-brutal hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all duration-100">
                       Visit
                       <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>

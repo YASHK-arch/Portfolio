@@ -9,9 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const ExperienceSection = () => {
   return (
     <SectionWrapper
+      id="experience"
       className="flex flex-col items-center justify-center min-h-[120vh] py-20"
     >
-      <div className="w-full max-w-4xl px-4 md:px-8 mx-auto">
+      <div className="w-full max-w-4xl px-4 md:px-8 mx-auto relative z-10">
         <SectionHeader
           id="experience"
           title="Experience"
@@ -54,9 +55,9 @@ const ExperienceCard = ({
     >
       <Card
         className={cn(
-          "bg-card text-card-foreground border-border",
-          "hover:border-primary/20 transition-colors duration-300",
-          "shadow-sm hover:shadow-md"
+          "bg-card text-card-foreground border-2 border-foreground",
+          "transition-all duration-150 hover:-translate-y-1 hover:bg-secondary/40",
+          "shadow-brutal hover:shadow-brutal-lg"
         )}
       >
         <CardHeader className="pb-3">
@@ -69,13 +70,13 @@ const ExperienceCard = ({
                 {experience.company}
               </div>
             </div>
-            <Badge variant="secondary" className="w-fit font-mono text-xs font-normal">
+            <Badge variant="secondary" className="w-fit border-2 border-foreground bg-accent font-mono text-xs font-bold text-accent-foreground">
               {experience.startDate} - {experience.endDate}
             </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <ul className="list-disc list-outside ml-4 space-y-2 text-base text-muted-foreground leading-relaxed">
+          <ul className="list-disc list-outside ml-4 space-y-2 text-base text-muted-foreground leading-relaxed marker:text-accent2">
             {experience.description.map((point, i) => (
               <li key={i}>{point}</li>
             ))}
@@ -88,7 +89,7 @@ const ExperienceCard = ({
                 <Badge
                   key={skillName}
                   variant="outline"
-                  className="gap-2 text-xs font-normal bg-secondary/30 hover:bg-secondary/50 transition-colors border-transparent"
+                  className="gap-2 border border-foreground bg-background px-2 text-xs font-bold transition-colors hover:bg-accent"
                 >
                   <img
                     src={skill.icon}

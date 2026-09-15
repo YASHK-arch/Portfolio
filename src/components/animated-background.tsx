@@ -43,6 +43,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
       if (selectedSkillRef.current) playReleaseSound();
       setSelectedSkill(null);
       selectedSkillRef.current = null;
+      window.dispatchEvent(new CustomEvent("skill-hover", { detail: null }));
       if (splineApp.getVariable("heading") && splineApp.getVariable("desc")) {
         splineApp.setVariable("heading", "");
         splineApp.setVariable("desc", "");
@@ -55,6 +56,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
           playPressSound();
           setSelectedSkill(skill);
           selectedSkillRef.current = skill;
+          window.dispatchEvent(new CustomEvent("skill-hover", { detail: skill }));
         }
       }
     }
@@ -76,6 +78,9 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     splineApp.addEventListener("keyUp", () => {
       if (!splineApp || isInputFocused()) return;
       playReleaseSound();
+      setSelectedSkill(null);
+      selectedSkillRef.current = null;
+      window.dispatchEvent(new CustomEvent("skill-hover", { detail: null }));
       splineApp.setVariable("heading", "");
       splineApp.setVariable("desc", "");
     });
@@ -86,6 +91,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
         playPressSound();
         setSelectedSkill(skill);
         selectedSkillRef.current = skill;
+        window.dispatchEvent(new CustomEvent("skill-hover", { detail: skill }));
         splineApp.setVariable("heading", skill.label);
         splineApp.setVariable("desc", skill.shortDescription);
       }
@@ -143,7 +149,8 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     // Section transitions
     return [
       createSectionTimeline("#skills", "skills", "hero"),
-      createSectionTimeline("#projects", "projects", "skills", "top 70%"),
+      createSectionTimeline("#experience", "experience", "skills", "top 70%"),
+      createSectionTimeline("#projects", "projects", "experience", "top 70%"),
       createSectionTimeline("#contact", "contact", "projects", "top 30%"),
     ].filter(Boolean) as gsap.core.Timeline[];
   };
@@ -328,9 +335,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
       textMobileLight.visible = mLight;
     };
 
-    if (activeSection !== "skills") {
-      setVisibility(false, false, false, false);
-    } else if (theme === "dark") {
+    if (theme === "dark") {
       isMobile
         ? setVisibility(false, false, false, true)
         : setVisibility(false, true, false, false);
@@ -339,7 +344,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
         ? setVisibility(false, false, true, false)
         : setVisibility(true, false, false, false);
     }
-  }, [theme, splineApp, isMobile, activeSection]);
+  }, [theme, splineApp, isMobile]);
 
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
@@ -479,10 +484,17 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [splineApp]);
 
+  const zIndex =
+    activeSection === "hero"
+      ? "z-[999]"
+      : activeSection === "skills" || activeSection === "contact"
+      ? "z-[1]"
+      : "z-0 pointer-events-none";
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Spline
-        className="w-full h-full fixed"
+        className={`w-full h-full fixed ${zIndex}`}
         ref={splineContainer}
         onLoad={(app: Application) => {
           setSplineApp(app);

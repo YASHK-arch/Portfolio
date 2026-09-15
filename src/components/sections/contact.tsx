@@ -20,16 +20,16 @@ const ContactSection = () => {
           LET&apos;S WORK <br />
           TOGETHER
         </>} />
-      <div className="grid grid-cols-1 md:grid-cols-2 z-[9999] mx-4">
-        <Card className="min-w-7xl bg-white/70 dark:bg-black/70 backdrop-blur-sm rounded-xl mt-10 md:mt-20">
+      <div className="grid grid-cols-1 z-[9999] mx-4 md:mx-0">
+        <Card className="w-full max-w-xl bg-card border-2 border-foreground shadow-brutal-lg mt-6 md:mt-10">
           <CardHeader>
-            <CardTitle className="text-4xl">Contact Form</CardTitle>
-            <CardDescription>
-              Please contact me directly at{" "}
+            <CardTitle className="text-4xl uppercase tracking-tight">Contact Form</CardTitle>
+            <CardDescription className="font-mono text-sm">
+              Mail me at{" "}
               <a
                 target="_blank"
                 href={`mailto:${config.email}`}
-                className="text-gray-200 cursor-can-hover rounded-lg"
+                className="font-bold text-accent-foreground bg-accent px-1 border border-foreground cursor-can-hover"
               >
                 {config.email.replace(/@/g, "(at)")}
               </a>{" "}

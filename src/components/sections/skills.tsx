@@ -37,6 +37,8 @@ const SkillsSection = () => {
             <li
               key={skill.name}
               style={{ "--skill": skill.color } as CSSProperties}
+              onMouseEnter={() => window.dispatchEvent(new CustomEvent("skill-hover", { detail: skill }))}
+              onMouseLeave={() => window.dispatchEvent(new CustomEvent("skill-hover", { detail: null }))}
               className={cn(
                 // the section sits inside `.canvas-overlay-mode` (pointer-events
                 // disabled so the 3D canvas can be clicked through); re-enable on

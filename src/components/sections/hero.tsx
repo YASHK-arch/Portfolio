@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
-import { File, Github, Linkedin } from "lucide-react";
+import { ArrowDownRight, File } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -15,13 +15,36 @@ import { SiGithub, SiLinkedin, SiYoutube } from "react-icons/si";
 import { config } from "@/data/config";
 import SectionWrapper from "../ui/section-wrapper";
 import HeroAvatarOrbs from "../hero-avatar-orbs";
+import AeroShards from "../aero-shards/AeroShards";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
     <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
-      <div className="grid md:grid-cols-2">
+      {/* AeroShards background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <AeroShards
+          backgroundColor="#000000"
+          shardColor="#896ABD"
+          accentColor="#A855F7"
+          placement="full"
+          flow="stream"
+          material="pearl"
+          detail="balanced"
+          effect="none"
+          interaction="repel"
+          density={1}
+          shardSize={0.9}
+          glow={0.6}
+          bloom={0.3}
+          grain={0.03}
+          chromaticAberration={0.005}
+          onError={() => {}}
+        />
+      </div>
+
+      <div className="relative z-[1] grid md:grid-cols-2">
         <div
           className={cn(
             "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
@@ -31,17 +54,17 @@ const HeroSection = () => {
           )}
         >
           {!isLoading && (
-            <div className="flex flex-col">
+            <div className="flex flex-col max-w-2xl px-5 md:px-0">
               <div>
                 <BlurIn delay={0.7}>
                   <p
                     className={cn(
-                      "md:self-start mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "md:self-start mt-4 inline-flex w-fit items-center gap-2 border-2 border-foreground bg-accent px-3 py-1 font-mono text-xs font-black uppercase tracking-[0.16em] text-accent-foreground",
+                      "cursor-default"
                     )}
                   >
-                    Hi, I am
-                    <br className="md:hidden" />
+                    <span className="size-2 bg-accent2 animate-pulse" />
+                    Available for select work
                   </p>
                 </BlurIn>
 
@@ -50,9 +73,9 @@ const HeroSection = () => {
                     <TooltipTrigger asChild>
                       <h1
                         className={cn(
-                          "-ml-[6px] leading-none text-transparent text-slate-800 text-left",
-                          "font-bold text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
-                          "cursor-default text-edge-outline font-display "
+                          "-ml-[4px] mt-5 leading-[0.88] text-left text-foreground",
+                          "font-black text-6xl sm:text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
+                          "cursor-default font-display"
                         )}
                       >
                         {config.author.split(" ")[0]}
@@ -72,11 +95,11 @@ const HeroSection = () => {
                 <BlurIn delay={1.2}>
                   <p
                     className={cn(
-                      "md:self-start md:mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "md:self-start mt-5 max-w-xl border-l-4 border-accent2 pl-4 text-base font-medium leading-relaxed text-muted-foreground sm:text-lg md:text-xl",
+                      "cursor-default"
                     )}
                   >
-                    Full-Stack Developer | AI/ML | Data Science
+                    Full-stack developer building clear, capable digital products with AI and data at their core.
                   </p>
                 </BlurIn>
               </div>
@@ -88,7 +111,8 @@ const HeroSection = () => {
                   <BoxReveal delay={2} width="100%" >
                     <Button className="flex items-center gap-2 w-full">
                       <File size={24} />
-                      <p>Portfolio PDF</p>
+                      <p>View résumé</p>
+                      <ArrowDownRight size={18} />
                     </Button>
                   </BoxReveal>
                 </Link>
